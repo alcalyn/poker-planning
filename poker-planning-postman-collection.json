@@ -1,0 +1,114 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Poker Planning",
+		"_postman_id": "16581028-c038-ecf4-65ec-9e25281b8f26",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "POST /teams : Create team \"My team\"",
+			"request": {
+				"url": "http://0.0.0.0:8480/index-dev.php/api/teams",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"title\": \"My team\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "POST /users : Create user \"Tyler\"",
+			"request": {
+				"url": "http://0.0.0.0:8480/index-dev.php/api/users",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"pseudo\": \"Tyler\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "PUT /teams/1/users/1 : A player joins a team",
+			"request": {
+				"url": "http://0.0.0.0:8480/index-dev.php/api/teams/1/users/1",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "13"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "POST /users/1/vote : Tyler votes \"13\"",
+			"request": {
+				"url": "http://0.0.0.0:8480/index-dev.php/api/users/1/vote",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "13"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GET /teams/1 : Get Team #1",
+			"request": {
+				"url": "http://0.0.0.0:8480/index-dev.php/api/teams/1",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GET /teams : Get all teams",
+			"request": {
+				"url": "http://0.0.0.0:8480/index-dev.php/api/teams",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
+
