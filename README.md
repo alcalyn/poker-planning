@@ -1,7 +1,7 @@
 Poker Planning
 ==============
 
-A Poker Planning real-time application.
+An experimental Poker Planning real-time application.
 
 Realized with [Sandstone](https://github.com/eole-io/sandstone-edition), PHP and websockets.
 
@@ -22,10 +22,16 @@ cd poker-planning/
 make
 ```
 
+> **Note**: Sometimes you'll need to do either a
+> `chown -R {your_user}:{your_group} .`
+> or a
+> `chmod -R 777 var/*`
+> to make it work.
+
 
 ## Usage
 
-Access the the front application at: `www/poker-planning/index.html`
+Access the front application at: http://0.0.0.0:8580/
 
 And RestApi application:
 
@@ -34,7 +40,12 @@ And RestApi application:
  - `ws://0.0.0.0:8482` Websocket server.
 
 You can use the [Postman collection](poker-planning-postman-collection.json)
-to run some predefined API requests calls.
+to run some predefined API requests calls
+(you can call every request once, ordered by the first to the last, to fill your database).
+
+You can create or join a team, wait for your teammates to join, then vote.
+
+Votes are revealed once all users voted.
 
 
 ## License

@@ -10,19 +10,34 @@
     </head>
     <body>
         <div class="container screen screen-pseudo">
-            <form>
-                <h2>Enter your name</h2>
-                <input type="text" id="input-pseudo" class="form-control" placeholder="Your name" required autofocus>
-                <br />
-                <button class="btn btn-lg btn-primary btn-block" type="submit">Ok</button>
-            </form>
+            <div class="row">
+                <div class="col-sm-6 offset-sm-3 col-md-4 offset-md-2">
+                    <form>
+                        <h2>Enter your name</h2>
+                        <input type="text" id="input-pseudo" class="form-control" placeholder="Your name" required autofocus>
+                        <br />
+                        <button class="btn btn-lg btn-primary btn-block" type="submit">Ok</button>
+                    </form>
+                </div>
+            </div>
         </div>
 
         <div class="container screen screen-teams">
-            <h2>Join a team <button class="btn btn-default refresh-teams"><i class="fa fa-refresh" aria-hidden="true"></i></button></h2>
-            <button type="button" class="btn btn-success btn-lg btn-list create-team"><i class="fa fa-plus" aria-hidden="true"></i> Créer une équipe</button>
+            <h2>
+                Join a team
+                <button class="btn btn-default refresh-teams"><i class="fa fa-refresh" aria-hidden="true"></i></button>
+            </h2>
+
+            <button type="button" class="btn btn-success btn-lg btn-list create-team">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+                Create team
+            </button>
+
             <div class="teams-list">
-                <button type="button" class="btn btn-primary btn-lg btn-list"><i class="fa fa-users" aria-hidden="true"></i> Loading teams...</button>
+                <button type="button" class="btn btn-primary btn-lg btn-list">
+                    <i class="fa fa-users" aria-hidden="true"></i>
+                    Loading teams...
+                </button>
             </div>
         </div>
 
@@ -39,7 +54,7 @@
                     <h2>
                         Team
                         <span class="team-name"></span>
-                        <span class="badge badge-primary">Vote en cours...</span>
+                        <span class="badge badge-primary">Vote in progress...</span>
                         <button class="btn btn-default refresh-team"><i class="fa fa-refresh" aria-hidden="true"></i></button>
                     </h2>
                     <ul class="list-group team-users-list">

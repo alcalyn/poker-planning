@@ -4,6 +4,7 @@ namespace App;
 
 use Pimple\ServiceProviderInterface;
 use Pimple\Container;
+use App\Topic\TeamsTopic;
 use App\Topic\TeamTopic;
 
 class HelloWebsocketProvider implements ServiceProviderInterface
@@ -13,6 +14,12 @@ class HelloWebsocketProvider implements ServiceProviderInterface
      */
     public function register(Container $app)
     {
+        $app
+            ->topic('teams', function ($topicPattern) {
+                return new TeamsTopic($topicPattern);
+            })
+        ;
+
         $app
             ->topic('teams/{teamId}', function ($topicPattern, $arguments) {
                 $teamId = intval($arguments['teamId']);

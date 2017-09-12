@@ -2,29 +2,20 @@
     'use strict';
 
     var apiUrl = 'http://0.0.0.0:8480/index-dev.php/api';
-    var websocketUrl = 'ws://0.0.0.0:8482';
-    var autobahnSession = null;
 
-    autobahn.connect(websocketUrl, onOpen, onError);
-
-    function onOpen(session) {
-        autobahnSession = session;
-
-        autobahnSession.subscribe('teams', function (topic, event) {
-            console.log('msg teams', topic, event);
-
-            switch (event.type) {
-                case 'team_created':
-                    App.Model.teams.push(event.team);
-                    App.Teams.View.refresh();
-                    break;
+    var autobahnSessionPromise = new Promise(function (resolve, reject) {
+        autobahn.connect(
+            'ws://0.0.0.0:8482',
+            function (session) {
+                resolve(session);
+            },
+            function (code, reason, detail) {
+                reject(['error', code, reason, detail]);
             }
-        });
-    }
+        );
 
-    function onError(code, reason, detail) {
-        console.warn('error', code, reason, detail);
-    }
+    });
+
 
     var App = {};
 
@@ -84,6 +75,19 @@
                 e.preventDefault();
                 return false;
             });
+
+            autobahnSessionPromise.then(function (session) {
+                session.subscribe('teams', function (topic, event) {
+                    console.log('msg teams', topic, event);
+
+                    switch (event.type) {
+                        case 'team_created':
+                            App.Model.teams.push(event.team);
+                            App.Teams.View.refresh();
+                            break;
+                    }
+                });
+            });
         },
 
         refresh: function () {
@@ -130,26 +134,28 @@
                 App.Model.team = team;
                 App.Team.display();
 
-                autobahnSession.subscribe('teams/'+team.id, function (topic, event) {
-                    console.log('msg team', topic, event);
+                autobahnSessionPromise.then(function (session) {
+                    session.subscribe('teams/'+team.id, function (topic, event) {
+                        console.log('msg team', topic, event);
 
-                    switch (event.type) {
-                        case 'user_joined':
-                            App.Model.team.users.push(event.user);
-                            break;
+                        switch (event.type) {
+                            case 'user_joined':
+                                App.Model.team.users.push(event.user);
+                                App.Team.View.refresh();
+                                break;
 
-                        case 'user_voted':
-                            $.each(App.Model.team.users, function (index, user) {
-                                if (user.id === event.user.id) {
-                                    App.Model.team.users[index].vote = event.user.vote;
-                                    App.Model.team.vote_in_progress = event.user.team.vote_in_progress;
-                                    return false;
-                                }
-                            });
-                            break;
-                    }
-
-                    App.Team.View.refresh();
+                            case 'user_voted':
+                                $.each(App.Model.team.users, function (index, user) {
+                                    if (user.id === event.user.id) {
+                                        user.vote = event.user.vote;
+                                        App.Model.team.vote_in_progress = event.user.team.vote_in_progress;
+                                        return false;
+                                    }
+                                });
+                                App.Team.View.refresh();
+                                break;
+                        }
+                    });
                 });
             });
         },
@@ -210,7 +216,7 @@
                 .removeClass('badge-warning')
                 .removeClass('badge-success')
                 .addClass(App.Model.team.vote_in_progress ? 'badge-warning' : 'badge-succes')
-                .html(App.Model.team.vote_in_progress ? 'Vote en cours...' : 'Vote terminé')
+                .html(App.Model.team.vote_in_progress ? 'Vote in progress...' : 'Vote finished')
             ;
 
             var $teamUsersContainer = $('.team-users-list');
@@ -237,8 +243,10 @@
                     if (!App.Model.team.vote_in_progress || isMe) {
                         $createdUser.append(' <span class="badge badge-primary">'+user.vote+'</span>');
                     } else {
-                        $createdUser.append(' <span class="badge badge-default">a voté</span>');
+                        $createdUser.append(' <span class="badge badge-default">has voted</span>');
                     }
+                } else {
+                    $createdUser.append(' ...');
                 }
 
                 $teamUsersContainer.append($createdUser);
